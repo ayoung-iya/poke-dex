@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 interface PokeNameChipProps {
   name: string;
   id: number;
+  color: string,
 }
 
 const PokeNameChip = (props: PokeNameChipProps) => {
@@ -24,7 +25,7 @@ const PokeNameChip = (props: PokeNameChipProps) => {
   }
   return (
     <Chip>
-      <NumberChip>
+      <NumberChip color={props.color}>
         <Number>{renderNumber(props.id)}</Number>
       </NumberChip>
       <Text>{props.name}</Text>
@@ -44,9 +45,9 @@ const Chip = styled.div`
   box-shadow: 0.5px 0.5px 0 0 #c0c0c0;
 `;
 
-const NumberChip = styled.div`
+const NumberChip = styled.div<{color: string}>`
   padding: 4px 6px;
-  background-color: yellow;
+  background-color: ${props => props.color};
   border-radius: 16px;
   opacity: 0.8;
 `;
