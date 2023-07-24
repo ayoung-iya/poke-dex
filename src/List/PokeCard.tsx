@@ -7,6 +7,7 @@ import {
   PokemonDetailType,
   fetchPokemonDetail,
 } from "../Service/pokemonService";
+import { PokeImageSkeleton } from "../Common/PokeimageSkeleton";
 
 interface PokeCardProps {
   name: string;
@@ -28,7 +29,19 @@ const PokeCard = (props: PokeCardProps) => {
   }, [props.name]);
 
   if (!pokemon) {
-    return null; // TODO: 화면이 로딩중일 때 표시
+    return(
+      <Item color={'#fff'}>
+        <Header>
+          <PokeNameChip name={'포켓몬'} color = {'#ffca09'} id={0} />
+        </Header>
+        <Body>
+          <PokeImageSkeleton />
+        </Body>
+        <Footer>
+          <PokeMarkChip />
+        </Footer>
+      </Item>
+    )
   }
 
   return (
