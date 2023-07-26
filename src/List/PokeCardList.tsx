@@ -1,40 +1,29 @@
 import styled from "@emotion/styled";
 import PokeCard from "./PokeCard";
-import {
-  PokemonListReponseType,
-  fetchPokemons,
-} from "../Service/pokemonService";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
+import { RootState, useAppDispatch } from "../Store";
+import { fetchPokemons } from "../Store/pokemonsSlice";
+import { useSelector } from "react-redux";
 
 const PokeCardList = () => {
-  const [pokemons, setPokemons] = useState<PokemonListReponseType>({
-    count: 0,
-    next: "",
-    results: [],
-  });
+  const dispatch = useAppDispatch();
+  //useState로 관리하고 있는 지역상태관리를 전역상태관리로 관리한다.
+  const { pokemons } = useSelector((state: RootState) => state.pokemons)
 
-  const [infiteRef] = useInfiniteScroll({
+  const [infiniteRef] = useInfiniteScroll({
     loading: false,
     hasNextPage: pokemons.next !== "",
     onLoadMore: async () => {
-      const morePokemons = await fetchPokemons(pokemons.next);
-
-      setPokemons({
-        ...morePokemons,
-        results: [...pokemons.results, ...morePokemons.results]
-      })
+      dispatch(fetchPokemons(pokemons.next));
     },
     disabled: false,
     rootMargin: "0px 0px 400px 0px",
   });
 
   useEffect(() => {
-    (async () => {
-      const pokemons = await fetchPokemons();
-      setPokemons(pokemons);
-    })();
-  }, []);
+    dispatch(fetchPokemons());
+  }, [dispatch]);
 
   return (
     <>
@@ -45,7 +34,7 @@ const PokeCardList = () => {
           );
         })}
       </List>
-      <Loading ref={infiteRef}>Loading...</Loading>
+      <Loading ref={infiniteRef}>Loading...</Loading>
     </>
   );
 };

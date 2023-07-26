@@ -24,4 +24,4 @@ export const ImageTypeSlice = createSlice({
 
 export const { changeImageType } = ImageTypeSlice.actions
 
-export const imagetypeReducer = ImageTypeSlice.reducer
+export const imageTypeReducer = ImageTypeSlice.reducer
